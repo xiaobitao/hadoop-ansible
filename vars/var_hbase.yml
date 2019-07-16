@@ -1,7 +1,7 @@
 ---
 # hbase basic vars
-download_path: "/home/pippo/Downloads"    # your local download path
-hbase_version: "1.2.6"                    # hbase version
+download_path: "/home/android/Downloads"    # your local download path
+hbase_version: "2.1.3"                    # hbase version
 hbase_path: "/home/hadoop"                # install dir
 hbase_config_path: "/home/hadoop/hbase-{{hbase_version}}/conf"
 

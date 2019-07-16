@@ -1,19 +1,14 @@
 [master]
-172.16.251.70
+hmaster  ansible_user=root
 [workers]
-172.16.251.71
-172.16.251.72
+hmaster  ansible_user=root
+slaver1  ansible_user=root
+slaver2  ansible_user=root
 [hive]
-172.16.251.70
 [hbase]
-172.16.251.70
-172.16.251.71
-172.16.251.72
+hmaster  ansible_user=root
 [zookeeper]
-172.16.251.70
-172.16.251.71
-172.16.251.72
+hmaster  ansible_user=root
+slaver1  ansible_user=root
+slaver2  ansible_user=root
 [spark]
-172.16.251.70
-172.16.251.71
-172.16.251.72
