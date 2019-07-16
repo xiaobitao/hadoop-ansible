@@ -1,0 +1,4 @@
+[zookeeper]
+hmaster ansible_user=root
+slaver1 ansible_user=root
+slaver2 ansible_user=root
