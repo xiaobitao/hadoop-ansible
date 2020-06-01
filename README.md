@@ -215,6 +215,8 @@ master_hostname: your hadoop master hostname
 above two variables must be same like your real hadoop master
 
 ansible-playbook -i hosts/host workers.yml -e "master_ip=172.16.251.70 master_hostname=hadoop-master"
+ansible-playbook -i hosts/host workers.yml -e "master_ip=master_name master_hostname=hadoop-master"
+# 不要用IP, IP可能造成文件早不到错误
 
 ```
 
