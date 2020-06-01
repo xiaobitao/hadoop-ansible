@@ -1,0 +1,9 @@
+---
+- name: Install keepalived.
+  yum: name=keepalived state=present
+
+- name: Copy keepalive script
+  template: src=check_nfs_health.sh dest=/home/script/
+
+# - name: Set Java Home Script
+#  shell: source /etc/profile.d/java_home.sh
