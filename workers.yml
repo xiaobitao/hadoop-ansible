@@ -26,6 +26,7 @@
     - user
     - authorized
     - java
+    - keepalived
     - hadoop
 
 

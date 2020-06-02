@@ -1,14 +1,14 @@
 [master]
-hmaster  ansible_user=root
+tmaster  ansible_user=root
 [workers]
-hmaster  ansible_user=root
-slaver1  ansible_user=root
-slaver2  ansible_user=root
+tmaster  ansible_user=root
+tslaver1  ansible_user=root
+tslaver2  ansible_user=root
 [hive]
 [hbase]
-hmaster  ansible_user=root
+tmaster  ansible_user=root
 [zookeeper]
-hmaster  ansible_user=root
-slaver1  ansible_user=root
-slaver2  ansible_user=root
+tmaster  ansible_user=root
+tslaver1  ansible_user=root
+tslaver2  ansible_user=root
 [spark]

@@ -3,6 +3,13 @@
   user: name={{user}} shell=/bin/bash append=yes
   when: add_user
 
+- name: Creates directory
+  file:
+    path: /home/script
+    state: directory
+    owner: root
+    group: root
+    mode: 0777
 
 - name: Check Public Key
   shell: "ls /home/{{ user }}/.ssh|grep '.pub' |wc -l"
