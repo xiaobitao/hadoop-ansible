@@ -93,7 +93,8 @@ print_help() {
 # -----------------------------------------------------------------------------------------
 # Default variable if not define in script command parameter
 # -----------------------------------------------------------------------------------------
-NFS_SERVER_SERVICES=${NFS_SERVER_SERVICES:="nfs mountd portmapper nlockmgr"}
+#NFS_SERVER_SERVICES=${NFS_SERVER_SERVICES:="nfs mountd portmapper nlockmgr"}
+NFS_SERVER_SERVICES=${NFS_SERVER_SERVICES:="nfs mountd portmapper"}
 NFS_CLIENT_SERVICES=${NFS_CLIENT_SERVICES:="portmapper"}
 NFS_SERVICES="default"
 NFS_SIDE="server"
