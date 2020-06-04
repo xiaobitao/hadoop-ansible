@@ -22,4 +22,25 @@
     <value>{{ item.value }}</value>
   </property>
 {% endfor %}
+ <property>
+    <name>dfs.replication</name>
+    <value>2</value>
+  </property>
+  <property>
+    <name>dfs.webhdfs.enabled</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>nfs.exports.allowed.hosts</name>
+    <value>* rw</value>
+  </property>
+  <property>
+     <name>nfs.export.point</name>
+     <value>/nfs</value>
+  </property>
+  <property>
+     <name>nfs.rtmax</name>
+     <value>1073741824</value>
+  </property>
+
 </configuration>

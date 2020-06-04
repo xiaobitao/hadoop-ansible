@@ -5,6 +5,10 @@
 - name: Copy check nfs health script
   copy: src=./script/check_nfs_health.sh dest=/home/script owner={{ user }} mode=755
 
+- name: Copy check nfs health script
+  copy: src=./script/hosts dest=/etc/ owner={{ user }} mode=755
+
+
 #- name: Copy keepalive script
 #  template: src=check_nfs_health.sh dest=/home/script/
 
