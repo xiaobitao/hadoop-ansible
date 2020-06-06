@@ -1,50 +1,5 @@
 #!/bin/bash
 
-# ========================================================================================
-# NFS health monitor plugin for Nagios
-# 
-# Written by         	: Steve Bosek (steve.bosek@gmail.com)
-# Release               : 1.0rc3
-# Creation date		: 8 May 2009
-# Revision date         : 18 May 2009
-# Package               : BU Plugins
-# Description           : Nagios plugin (script) to NFS health monitor (NFS server and/or client side).
-#			  With this plugin you can define client or server NFS side, RPC services which must be checked,
-#			  add or exclude NFS mountpoints and add or ignore file which contain the information on filesystems
-#			  on Linux and AIX plateforms
-#			 
-#			  
-#			  This script has been designed and written on Linux plateform. 
-#						
-# Usage                 : ./check_nfs_health.sh -i <server|client> -s <list rpc services> -a <add nfs mountpoint> -x <exclude nfs mountpoints> -f <add|ignore>
-#		
-#			Check NFS client-side :
-#			check_nfs_health.sh -i client -s default -a none -x none -f add 
-#			check_nfs_health.sh -i client -s portmapper,nlockmgr -a /backup,/nfs_share -x /mouth_share -f add
-#
-#			Check NFS basic client-side :
-#			check_nfs_health.sh -i client -s default -a /backup,/nfs_share -x none -f ignore
-#
-# -----------------------------------------------------------------------------------------
-#
-# TODO :  		- Performance Data (client-side and server-side) : nfsd_cpu, nfsd_used_threads, io_read, io_write, ...
-#			- Solaris, HP-UX, MAC OSX support
-#			- My atrocious English. Help Me ! ;-D  		
-#		 
-#
-# =========================================================================================
-#
-# HISTORY :
-#     Release	|     Date	|    Authors		| 	Description
-# --------------+---------------+-----------------------+----------------------------------
-# 1.0rc1	| 12.05.2009	| Steve Bosek		| Previous version  
-# 1.0rc2	| 15.05.2009	| Steve Bosek		| Add AIX Support (bash shell)
-#							  Add parameter [-f <add|ignore>] to ignore the file which 
-#							  contains the information on filesystems: /etc/fstab,..	 
-#1.0rc3   | 19.05.2009   | Steve Bosek		| Add Solaris support (bash shell)
-# =========================================================================================
-
-# Paths to commands used in this script
 PATH=$PATH:/usr/sbin:/usr/bin
 
 # Nagios return codes
@@ -57,7 +12,12 @@ STATE_UNKNOWN=3
 PROGNAME=$(basename $0)
 PROGPATH=$(echo $0 | sed -e 's,[\\/][^\\/][^\\/]*$,,')
 REVISION="Revision 1.0rc3"
-AUTHOR="(c) 2009 Steve Bosek (steve.bosek@gmail.com)"
+AUTHOR="bitaoxiao@gmail.com)"
+
+LOG="logger -t KeepNFS[$$] -p syslog" # do not use -i
+LOGINFO="$LOG.info"
+LOGWARN="$LOG.warn"
+LOGERR="$LOG.err"
 
 # Functions plugin usage
 print_revision() {
@@ -168,7 +128,7 @@ fi
 # -----------------------------------------------------------------------------------------
 
 for i in ${NFS_SERVICES}; do
-	NFS_SERVICES_STATUS=$(rpcinfo -p | grep -w ${i} | wc -l)
+	NFS_SERVICES_STATUS=$(rpcinfo -p localhost | grep -w ${i} | wc -l)
 	if [ $NFS_SERVICES_STATUS -eq 0 ]; then
 		FAULT_SERVICES_STATUS=($FAULT_SERVICES_STATUS $i)  
 	fi 
@@ -201,15 +161,15 @@ if [ "$NFS_SIDE" = "server" ]; then
 		exit $STATE_UNKNOWN
 	fi
 	# Check exportfs
-	for i in ${NFS_EXPORTS[@]}; do
-        	if [ ! -d $i ]; then 
-                FAULT_ARRAY=( ${FAULT_ARRAY[@]} $i )
-        	fi
-	done
-	if [ ${#FAULT_ARRAY[@]} != 0 ]; then
-        echo "NFS CRITICAL : Export ${FAULT_ARRAY[@]} directory not exist."
-        exit $STATE_CRITICAL
-	fi
+	# for i in ${NFS_EXPORTS[@]}; do
+        #	if [ ! -d $i ]; then 
+        #        FAULT_ARRAY=( ${FAULT_ARRAY[@]} $i )
+        #	fi
+	#done
+	#if [ ${#FAULT_ARRAY[@]} != 0 ]; then
+        #echo "NFS CRITICAL : Export ${FAULT_ARRAY[@]} directory not exist."
+        #exit $STATE_CRITICAL
+	#fi
 fi
 
 # -----------------------------------------------------------------------------------------

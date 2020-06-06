@@ -2,11 +2,23 @@
 - name: Install keepalived.
   yum: name=keepalived state=present
 
-- name: Copy check nfs health script
-  copy: src=./script/check_nfs_health.sh dest=/home/script owner={{ user }} mode=755
+- name: Install rpcbind.
+  yum: name=rpcbind state=present
+
+- name: Install showmount.
+  yum: name=showmount state=present
+
+- name: Install showmount.
+  yum: name=vim state=present
 
 - name: Copy check nfs health script
-  copy: src=./script/hosts dest=/etc/ owner={{ user }} mode=755
+  copy: src=./script/check_nfs_health.sh dest=/etc/keepalived/ owner={{ user }} mode=755
+
+- name: Copy check nfs health script
+  copy: src=./script/hosts dest=/etc/ owner={{ user }} mode=644
+
+- name: Copy check nfs health script
+  copy: src=./script/keepalive.conf dest=/etc/keepalived/keepalived.conf owner={{ user }} mode=644
 
 
 #- name: Copy keepalive script
