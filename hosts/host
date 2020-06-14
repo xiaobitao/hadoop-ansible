@@ -1,8 +1,8 @@
 [master]
-tmaster  ansible_user=root
+tslaver2  ansible_user=root
 [workers]
-tmaster  ansible_user=root
-tslaver1  ansible_user=root
+# tmaster  ansible_user=root
+# tslaver1  ansible_user=root
 tslaver2  ansible_user=root
 [hive]
 [hbase]

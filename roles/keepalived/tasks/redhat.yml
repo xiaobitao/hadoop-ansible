@@ -1,4 +1,23 @@
 ---
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Remove directory
+  file:
+    path: "{{mysql_datadir}}/"
+    state: absent
+
+- name: Create mysql director
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0777'
+  with_items:
+    - "{{ mysql_datadir }}"
+    - "{{ mysql_logdir }}"
+    - "/data/mysql"
+
 - name: Install keepalived.
   yum: name=keepalived state=present
 
@@ -8,11 +27,103 @@
 - name: Install showmount.
   yum: name=showmount state=present
 
-- name: Install showmount.
+- name: Install vim.
   yum: name=vim state=present
+
+- name: Download foo.conf
+  get_url:
+    url: https://repo.mysql.com//mysql80-community-release-el7-3.noarch.rpm
+    dest: /tmp/
+    mode: '044'
+
+- name: Install package.
+  yum:
+     name: /tmp/mysql80-community-release-el7-3.noarch.rpm
+     state: present
+
+- name: Install mysql.
+  yum: name=mysql state=present
+
+- name: Install mysql server.
+  yum: name=mysql-server state=present
+
+- name: Generate my.cnf
+  template:
+    src: my.cnf
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    # validate: /usr/local/mysql/bin/mysqld --defaults-file=%s --validate-config
+ 
+# - name: Generate my.cnf
+#  template:
+#    src: "client.my.cnf.j2"
+#    dest: "/root/.my.cnf"
+#    owner: root
+#    group: root
+#    mode: 0600
+ 
+- name: Installing dependencies
+  yum:
+    name:
+      - tzdata
+      - openssl
+      - openssl-devel
+      - libaio-devel
+      - numactl-libs
+      - MySQL-python
+      - mysql-devel
+    state: present
+
+- name: Init db
+  shell: mysqld --initialize-insecure --user=mysql --datadir={{ mysql_datadir }}
+
+- name: Start the MySQL service
+  action: service name=mysqld state=restarted
+
+# - name: get temp password
+#   shell: grep 'temporary password' /var/log/mysqld/mysqld.error.log|tail -n 1|awk '{print $NF}'
+#  register: pwd_result
+
+# - debug: msg="{{pwd_result.stdout_lines[0]}}"
+#  when: pwd_result.rc == 0
+
+- name: Change root password
+  mysql_user:
+    name: root
+    host_all: true
+    password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    login_user: root
+    # login_unix_socket: "{{ mysql_socket }}"
+    # login_password: "{{pwd_result.stdout_lines[0]}}"
+    login_password: 
+    state: present
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    user: ""
+    host_all: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    # login_unix_socket: "{{ mysql_socket }}"
+    sql_log_bin: false
+    state: absent
+
+# - name: Replace a localhost entry with our own
+#  lineinfile:
+#    path: /etc/my.cnf
+#    regexp: 'skip-grant-tables'
+#    line: 
+#    owner: root
+#    group: root
+#    mode: '0644'
 
 - name: Copy check nfs health script
   copy: src=./script/check_nfs_health.sh dest=/etc/keepalived/ owner={{ user }} mode=755
+
+- name: Copy check mysqld script
+  copy: src=./script/check_mysql.sh dest=/etc/keepalived/ owner={{ user }} mode=755
 
 - name: Copy check nfs health script
   copy: src=./script/hosts dest=/etc/ owner={{ user }} mode=644
