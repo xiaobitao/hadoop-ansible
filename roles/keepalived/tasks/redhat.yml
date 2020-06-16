@@ -3,21 +3,6 @@
   selinux:
     state: disabled
 
-- name: Remove directory
-  file:
-    path: "{{mysql_datadir}}/"
-    state: absent
-
-- name: Create mysql director
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0777'
-  with_items:
-    - "{{ mysql_datadir }}"
-    - "{{ mysql_logdir }}"
-    - "/data/mysql"
-
 - name: Install keepalived.
   yum: name=keepalived state=present
 
@@ -75,6 +60,32 @@
       - mysql-devel
     state: present
 
+- name: Stop Service
+  service: name=mysqld state=stopped
+
+- name: Remove directory
+  file:
+    path: "{{mysql_datadir}}/"
+    state: absent
+
+- name: Create mysql director
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0777'
+  with_items:
+    - "{{ mysql_datadir }}"
+    - "{{ mysql_logdir }}"
+    - "/data/mysql"
+
+- name: Disabled Firewalld
+  systemd:
+    name: 'firewalld'
+    state: stopped
+    enabled: no
+  when: disable_firewall
+  ignore_errors: true
+
 - name: Init db
   shell: mysqld --initialize-insecure --user=mysql --datadir={{ mysql_datadir }}
 
@@ -97,6 +108,7 @@
     login_user: root
     # login_unix_socket: "{{ mysql_socket }}"
     # login_password: "{{pwd_result.stdout_lines[0]}}"
+    sql_log_bin: false
     login_password: 
     state: present
 
