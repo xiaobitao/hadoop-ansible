@@ -1,0 +1,8 @@
+---
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: mysql_group_replication.yml
+  when: ansible_os_family == 'RedHat'
+
+

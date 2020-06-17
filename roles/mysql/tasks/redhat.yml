@@ -1,0 +1,104 @@
+---
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Download mysql
+  get_url:
+    url: https://repo.mysql.com//mysql80-community-release-el7-3.noarch.rpm
+    dest: /tmp/
+    mode: '044'
+
+- name: Install package.
+  yum:
+     name: /tmp/mysql80-community-release-el7-3.noarch.rpm
+     state: present
+
+- name: Install mysql.
+  yum: name=mysql state=present
+
+- name: Install mysql server.
+  yum: name=mysql-server state=present
+
+- name: Generate my.cnf
+  template:
+    src: my.cnf
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    # validate: /usr/local/mysql/bin/mysqld --defaults-file=%s --validate-config
+ 
+- name: Installing dependencies
+  yum:
+    name:
+      - tzdata
+      - openssl
+      - openssl-devel
+      - libaio-devel
+      - numactl-libs
+      - MySQL-python
+      - mysql-devel
+    state: present
+
+- name: Stop Service
+  service: name=mysqld state=stopped
+
+- name: Remove directory
+  file:
+    path: "{{mysql_datadir}}/"
+    state: absent
+
+- name: Create mysql director
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0777'
+  with_items:
+    - "{{ mysql_datadir }}"
+    - "{{ mysql_logdir }}"
+    - "/data/mysql"
+
+- name: Disabled Firewalld
+  systemd:
+    name: 'firewalld'
+    state: stopped
+    enabled: no
+  when: disable_firewall
+  ignore_errors: true
+
+- name: Init db
+  shell: mysqld --initialize-insecure --user=mysql --datadir={{ mysql_datadir }}
+
+- name: Start the MySQL service
+  action: service name=mysqld state=restarted
+
+# - name: get temp password
+#   shell: grep 'temporary password' /var/log/mysqld/mysqld.error.log|tail -n 1|awk '{print $NF}'
+#  register: pwd_result
+
+# - debug: msg="{{pwd_result.stdout_lines[0]}}"
+#  when: pwd_result.rc == 0
+
+- name: Change root password
+  mysql_user:
+    name: root
+    host_all: true
+    password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    login_user: root
+    # login_unix_socket: "{{ mysql_socket }}"
+    # login_password: "{{pwd_result.stdout_lines[0]}}"
+    sql_log_bin: false
+    login_password: 
+    state: present
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    user: ""
+    host_all: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    # login_unix_socket: "{{ mysql_socket }}"
+    sql_log_bin: false
+    state: absent
+
