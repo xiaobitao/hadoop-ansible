@@ -37,7 +37,6 @@
     - "START GROUP_REPLICATION;"
     - "SET GLOBAL group_replication_bootstrap_group=OFF;"
   run_once: true
-  no_log: true
   when:
     - ansible_play_hosts.index(inventory_hostname) == 0
     - not mysql_mgr_primary_status.stdout.strip()
@@ -47,10 +46,40 @@
 - name: Verify that the member nodes status
   shell: mysql -uroot -p"{{ mysql_root_password }}"  -ne "SELECT * FROM performance_schema.replication_group_members where member_host='{{ ansible_default_ipv4.address }}';"
   changed_when: false
-  no_log: yes
   register: mysql_mgr_member_status
   when:
     - ansible_play_hosts.index(inventory_hostname) != 0
+  tags:
+    - skip_ansible_lint
+
+
+- name: Startting MGR cluster member nodes
+  shell: mysql -uroot -p"{{ mysql_root_password }}"  -ne "START GROUP_REPLICATION;"
+  when:
+    - ansible_play_hosts.index(inventory_hostname) != 0
+    - not mysql_mgr_member_status.stdout.strip()
+  tags:
+    - skip_ansible_lint
+
+- name: Change  MGR mulite master
+  shell: mysql -uroot -p"{{ mysql_root_password }}"  -ne "{{ item }}"
+  loop:
+    - "STOP GROUP_REPLICATION;"
+    - "SET GLOBAL group_replication_single_primary_mode=OFF;"
+    - "SET GLOBAL group_replication_enforce_update_everywhere_checks=ON;"
+  # run_once: true
+  tags:
+    - skip_ansible_lint
+
+- name: Initializing MGR cluster
+  shell: mysql -uroot -p"{{ mysql_root_password }}"  -ne "{{ item }}"
+  loop:
+    - "SET GLOBAL group_replication_bootstrap_group=ON;"
+    - "START GROUP_REPLICATION;"
+    - "SET GLOBAL group_replication_bootstrap_group=OFF;"
+  run_once: true
+  when:
+    - ansible_play_hosts.index(inventory_hostname) == 0
   tags:
     - skip_ansible_lint
 
@@ -58,7 +87,6 @@
   shell: mysql -uroot -p"{{ mysql_root_password }}"  -ne "START GROUP_REPLICATION;"
   when:
     - ansible_play_hosts.index(inventory_hostname) != 0
-    - not mysql_mgr_member_status.stdout.strip()
   tags:
     - skip_ansible_lint
 
@@ -94,4 +122,4 @@
   run_once: true
   when:
     - ansible_play_hosts.index(inventory_hostname) == 0
-    - mysql_initialize_status is not skipped
+    # - mysql_initialize_status is not skipped
