@@ -1,8 +1,8 @@
 ---
 # spark basic vars
-download_path: "/home/pippo/Downloads"    # your local download path
-spark_package_name: "spark-2.2.1-bin-hadoop2.7"
-spark_version: "2.2.1"                    # spark version
+download_path: "/home/xiaobitao/hadoop"    # your local download path
+spark_package_name: "spark-2.4.6-bin-hadoop2.7"
+spark_version: "2.4.6"                    # spark version
 spark_path: "/home/hadoop"                # install dir
 spark_config_path: "/home/hadoop/spark-{{spark_version}}/conf"
 
@@ -19,7 +19,7 @@ spark_create_path:
 
 #scala vars
 scala_path: "{{ spark_path }}"
-scala_version: "2.12.4"              # scala version
+scala_version: "2.12.11"              # scala version
 
 
 spark_master_port: 17077               #spark port

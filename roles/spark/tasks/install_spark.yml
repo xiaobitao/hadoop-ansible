@@ -4,7 +4,14 @@
   unarchive: src={{ download_path }}/{{ spark_package_name}}.tgz dest={{ spark_path }} owner={{ user }} group={{ group }} mode=755 
 
 - name: Change Name
-  shell: mv {{ spark_path}}/{{ spark_package_name}} {{ spark_path }}/spark-{{spark_version}}
+  shell: mv {{ spark_path}}/{{ spark_package_name}}/ {{ spark_path }}/spark-{{spark_version}}
+  ignore_errors: true
+
+  # - name: Copy files from foo to bar
+  #copy: remote_src=True src={{ spark_path}}/{{ spark_package_name}}/*  dest={{ spark_path }}/spark-{{spark_version}}
+
+  #- name: Remove old files foo
+  #file: path={{ spark_path}}/{{ spark_package_name}} state=absent
 
 - name: Change Owner
   shell: "chown {{ user }}:{{ group }} {{ spark_path }}/spark-{{spark_version}} -R"

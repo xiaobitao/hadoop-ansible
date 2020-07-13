@@ -6,7 +6,7 @@
    - vars/var_master.yml
    - vars/var_spark.yml
   vars:
-     open_firewall: true        # firewalld
+     open_firewall: false        # firewalld
      install_spark: true        # install spark
      config_spark:  true        # config spark
      install_scala: true        # install scala
