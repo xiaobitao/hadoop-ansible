@@ -128,6 +128,18 @@ fi
 # -----------------------------------------------------------------------------------------
 
 for i in ${NFS_SERVICES}; do
+        PORT_MAP=$(jps | grep -i portmap | wc -l)
+	if [ $PORT_MAP -eq 0 ]; then
+		echo "Start port map"  
+                hdfs --daemon start portmap
+                sleep 5
+	fi 
+        NFS3=$(jps | grep -i nfs3 | wc -l)
+	if [ $NFS3 -eq 0 ]; then
+		echo "Start port hdfs nfs3"  
+                hdfs --daemon start nfs3
+                sleep 5
+	fi
 	NFS_SERVICES_STATUS=$(rpcinfo -p localhost | grep -w ${i} | wc -l)
 	if [ $NFS_SERVICES_STATUS -eq 0 ]; then
 		FAULT_SERVICES_STATUS=($FAULT_SERVICES_STATUS $i)  
