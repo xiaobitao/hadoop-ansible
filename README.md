@@ -2,7 +2,7 @@
 - 利用ansible安装Hadoop相关组件
 - 目前适用于 CentOS 7.x
 - JDK 版本  Openjdk-1.8
-- Hadoop 版本 3.0.0
+- Hadoop 版本 3.1.2
 - Hive 版本 2.3.2
 - Hbase 版本 1.2.6
 - Spark 版本 2.2.1
