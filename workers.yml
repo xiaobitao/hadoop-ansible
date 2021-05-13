@@ -28,8 +28,8 @@
     - authorized
     - java
     - keepalived
-    - mysql
+    # - mysql
     - hadoop
-    - zookeeper
+    # - zookeeper
 
 

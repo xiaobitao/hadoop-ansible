@@ -18,7 +18,7 @@ hbase_create_path:
 # hbase configration 
 hbase_hdfs_path: "/hbase"
 zk_hosts: "zookeeper"                  #zookeeper group name in hosts/host
-zk_client_port: 12181                  #zookeeper client port
+zk_client_port: 2181                  #zookeeper client port
 
 hbase_master_port: 60000               #hbase port
 hbase_master_info_port: 60010

@@ -1,6 +1,6 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-192.168.2.88 tmaster
-192.168.2.84 tslaver1
-192.168.2.75 tslaver2
+192.168.2.190 vmhmaster
+192.168.2.191 vmslaver1
+192.168.2.192 vmslaver2
