@@ -1,3 +1,6 @@
+# 修改Host
+scripts目录下有个host文件，会拷贝到目标机器上，需要提前编辑好
+
 # Hadoop-ansible
 - 利用ansible安装Hadoop相关组件
 - 目前适用于 CentOS 7.x
