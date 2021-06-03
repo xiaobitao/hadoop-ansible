@@ -1,8 +1,11 @@
+# 修改Host
+scripts目录下有个host文件，会拷贝到目标机器上，需要提前编辑好
+
 # Hadoop-ansible
 - 利用ansible安装Hadoop相关组件
 - 目前适用于 CentOS 7.x
 - JDK 版本  Openjdk-1.8
-- Hadoop 版本 3.0.0
+- Hadoop 版本 3.1.2
 - Hive 版本 2.3.2
 - Hbase 版本 1.2.6
 - Spark 版本 2.2.1
@@ -352,7 +355,7 @@ hbase_create_path:
 # hbase configration
 hbase_hdfs_path: "/hbase"
 zk_hosts: "zookeeper"                  #zookeeper group name in hosts/host
-zk_client_port: 12181                  #zookeeper client port
+zk_client_port: 2181                  #zookeeper client port
 
 hbase_master_port: 60000               #hbase port
 hbase_master_info_port: 60010

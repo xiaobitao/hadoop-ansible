@@ -13,7 +13,7 @@ zookeeper_log_path: "{{install_dir}}/zookeeper_log"
 # zookeeper port
 leader_port: 12888
 vote_port: 13888
-client_port: 12181
+client_port: 2181
 jmx_port: 11911
 random_port: "30001-65006"
 
@@ -26,7 +26,7 @@ firewall_ports:
 
 # env path
 install_dir: "/home/{{ user }}"
-download_path: "/home/android/Downloads/"               # your local download path
+download_path: "/home/xiaobitao/hadoop/"               # your local download path
 tmp_path: "/tmp"
 
 # host group

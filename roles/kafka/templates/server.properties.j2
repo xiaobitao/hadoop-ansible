@@ -135,7 +135,7 @@ log.retention.check.interval.ms={{ kafka_log_retention_check_interval_ms }}
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
 # zookeeper.connect={{ kafka_zookeeper_connect }}
-zookeeper.connect={% for host in groups['zookeeper'] %}{% if loop.index != groups['zookeeper']|length %}{{host}}:12181,{% else %}{{host}}:12181{% endif %}{% endfor %}
+zookeeper.connect={% for host in groups['zookeeper'] %}{% if loop.index != groups['zookeeper']|length %}{{host}}:2181,{% else %}{{host}}:2181{% endif %}{% endfor %}
 
 
 # Timeout in ms for connecting to zookeeper
