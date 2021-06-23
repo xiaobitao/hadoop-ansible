@@ -13,7 +13,7 @@ hadoop_version: "3.2.1"
 hadoop_path: "/home/hadoop"
 hadoop_config_path: "/home/hadoop/hadoop-{{hadoop_version}}/etc/hadoop"
 hadoop_tmp: "/home/hadoop/tmp"
-hadoop_dfs_name: "/home/hadoop/dfs/name"
+hadoop_dfs_name: "/root/dfs/name"
 hadoop_dfs_data: "/home/hadoop/dfs/data"
 hadoop_log_path: "/home/hadoop/hadoop_logs"
 
@@ -49,14 +49,6 @@ hdfs_site_properties:
   - {
       "name":"dfs.namenode.name.dir",
       "value":"file:{{ hadoop_dfs_name }}"
-  }
-  - {
-      "name":"dfs.namenode.data.dir",
-      "value":"file:{{ hadoop_dfs_data }}"
-  }
-  - {
-      "name":"dfs.replication",
-      "value":"{{ groups['workers']|length }}"
   }
   - {
     "name":"dfs.webhdfs.enabled",

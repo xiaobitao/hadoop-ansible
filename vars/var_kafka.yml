@@ -46,7 +46,7 @@ kafka_socket_receive_buffer_bytes: 102400
 kafka_socket_request_max_bytes: 104857600
 
 # A comma seperated list of directories under which to store log files
-kafka_log_dirs: /var/lib/kafka/logs
+kafka_log_dirs: /tmp/kafka/logs
 
 # The default number of log partitions per topic. More partitions allow greater
 # parallelism for consumption, but this will also result in more files across
@@ -81,7 +81,7 @@ kafka_auto_create_topics_enable: false
 kafka_delete_topic_enable: true
 
 # Default replication factor for automatically created topics.
-kafka_default_replication_factor: 1
+kafka_default_replication_factor: 2
 
 kafka_group_initial_rebalance_delay_ms: 0
 
