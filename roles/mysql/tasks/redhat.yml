@@ -56,7 +56,7 @@
   with_items:
     - "{{ mysql_datadir }}"
     - "{{ mysql_logdir }}"
-    - "/data/mysql"
+    # - "/data/mysql"
 
 - name: Disabled Firewalld
   systemd:
@@ -92,18 +92,18 @@
     login_password: 
     state: present
 
-- name: Change root password
-  mysql_user:
-    name: wim
-    host_all: true
-    password: "{{ mysql_root_password }}"
-    check_implicit_admin: yes
-    login_user: root
-    # login_unix_socket: "{{ mysql_socket }}"
+# - name: Change wim password
+#   mysql_user:
+#     name: wim
+#    host_all: true
+#    password: "{{ mysql_root_password }}"
+#    check_implicit_admin: yes
+#    login_user: root
+#    login_unix_socket: "{{ mysql_socket }}"
     # login_password: "{{pwd_result.stdout_lines[0]}}"
-    sql_log_bin: false
-    login_password: 
-    state: present
+#    sql_log_bin: false
+#    login_password: 
+#    state: present
 
 
 - name: Removes all anonymous user accounts
